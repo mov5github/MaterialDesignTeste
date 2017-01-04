@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "529000694664",
+    "firebase_url": "https://testematerialdesign-e877e.firebaseio.com",
+    "project_id": "testematerialdesign-e877e",
+    "storage_bucket": "testematerialdesign-e877e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:529000694664:android:c1971b9dcea85317",
+        "android_client_info": {
+          "package_name": "com.example.lucas.materialdesignteste"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "529000694664-2fthjtb2do0t24454scjunsspk116fps.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXyUQ-_H0cK_QEW2phmsP4UTFhldnn_Fc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

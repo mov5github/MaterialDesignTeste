@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="spinner_sexo">
+        <item>Selecione o sexo</item>
+        <item>Masculino</item>
+        <item>Feminino</item>
+    </string-array>
+
+    <string-array name="spinner_duracao_almoco">
+        <item>---</item>
+        <item>15min</item>
+        <item>30min</item>
+        <item>45min</item>
+        <item>1hora</item>
+        <item>1hora e 15min</item>
+        <item>1hora e 30min</item>
+        <item>2horas</item>
+        <item>3horas</item>
+        <item>4horas</item>
+        <item>5horas</item>
+    </string-array>
+
+    <string-array name="spinner_duracao_servico_horas">
+        <item>0h</item>
+        <item>1h</item>
+        <item>2h</item>
+        <item>3h</item>
+        <item>5h</item>
+        <item>6h</item>
+        <item>7h</item>
+        <item>8h</item>
+        <item>9h</item>
+        <item>10h</item>
+    </string-array>
+
+    <string-array name="spinner_duracao_servico_minutos">
+        <item>0min</item>
+        <item>5min</item>
+        <item>10min</item>
+        <item>15min</item>
+        <item>20min</item>
+        <item>25min</item>
+        <item>30min</item>
+        <item>35min</item>
+        <item>40min</item>
+        <item>45min</item>
+        <item>50min</item>
+        <item>55min</item>
+    </string-array>
+</resources>
