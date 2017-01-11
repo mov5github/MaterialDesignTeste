@@ -23,9 +23,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.crash.FirebaseCrash;
 
 public class SplashScreenActivity extends CommonActivity implements GoogleApiClient.OnConnectionFailedListener  {
-    private String REF_SALAO = "com.example.lucas.materialdesignteste";
     private Boolean splashIniciada = false;
     private Boolean splashCompleta = false;
+    private Boolean verificarUsuarioLogadoIniciado = false;
     private ImageView splashLogoMov5;
     private ImageView splashLogoSalao20;
     private TextView labelPoweredBy;
@@ -36,7 +36,7 @@ public class SplashScreenActivity extends CommonActivity implements GoogleApiCli
     private Handler handlerAnimationSplashSalao20= new Handler();
     private Handler handlerReverseAnimationSplashMov5= new Handler();
     private Handler handlerTempoMaximoVerificacao = new Handler();
-    private Handler handlerVerifyLogged = new Handler();
+    //private Handler handlerVerifyLogged = new Handler();
     private Thread threadVerificarUsuarioLogado;
 
 
@@ -53,7 +53,10 @@ public class SplashScreenActivity extends CommonActivity implements GoogleApiCli
         Log.i("teste","onCreate()");
         setContentView(R.layout.activity_splash_screen);
 
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener = getFirebaseAuthResultHandler();
         initViews();
+        initUser();
 
 
     }
@@ -64,10 +67,20 @@ public class SplashScreenActivity extends CommonActivity implements GoogleApiCli
         super.onStart();
         Log.i("teste","onStart()");
 
-        verificarUsuarioLogado();
+        if (!verificarUsuarioLogadoIniciado){
+            verificarUsuarioLogado();
+        }
 
         if (!splashIniciada){
             splashScreenInicial();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if( mAuthListener != null ){
+            mAuth.removeAuthStateListener( mAuthListener );
         }
     }
 
@@ -76,7 +89,7 @@ public class SplashScreenActivity extends CommonActivity implements GoogleApiCli
         super.onDestroy();
         threadVerificarUsuarioLogado.interrupt();
         handlerTempoMaximoVerificacao.removeCallbacksAndMessages(null);
-        handlerVerifyLogged.removeCallbacksAndMessages(null);
+        //handlerVerifyLogged.removeCallbacksAndMessages(null);
         handlerAnimationSplashSalao20.removeCallbacksAndMessages(null);
         handlerSplashScreenCompleta.removeCallbacksAndMessages(null);
         handlerReverseAnimationSplashMov5.removeCallbacksAndMessages(null);
@@ -225,16 +238,15 @@ public class SplashScreenActivity extends CommonActivity implements GoogleApiCli
             @Override
             public void run() {
                 Log.i("teste","threadVerificarUsuarioLogado run()");
-                mAuth = FirebaseAuth.getInstance();
-                mAuthListener = getFirebaseAuthResultHandler();
+                verifyLogged();
 
-                handlerVerifyLogged.postDelayed(new Runnable() {
+                /*handlerVerifyLogged.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         Log.i("teste","verificarUsuarioLogado() handlerVerifyLogged run()");
                         verifyLogged();
                     }
-                },1000);
+                },1000);*/
 
                 handlerTempoMaximoVerificacao.postDelayed(new Runnable() {
                     @Override
@@ -289,6 +301,8 @@ public class SplashScreenActivity extends CommonActivity implements GoogleApiCli
                         callHomeActivity();
                         break;
                     default:
+                        Log.i("teste","nextActivity() default");
+                        callConfiguracaoIncialActivity("funcionamento");
                         break;
                 }
             }
@@ -363,51 +377,8 @@ public class SplashScreenActivity extends CommonActivity implements GoogleApiCli
 
 
 
-    //SHAREDPREFERENCES
-    private void saveSPRefBoolean(Context context, String key, Boolean value ){
-        SharedPreferences sp = context.getSharedPreferences(REF_SALAO, Context.MODE_PRIVATE);
-        sp.edit().putBoolean(key, value).apply();
-    }
-
-    private Boolean getSPRefBoolean(Context context, String key ){
-        SharedPreferences sp = context.getSharedPreferences(REF_SALAO, Context.MODE_PRIVATE);
-        Boolean value = sp.getBoolean(key, false);
-        return( value );
-    }
-
-    private void saveSPRefString(Context context, String key, String value ){
-        SharedPreferences sp = context.getSharedPreferences(REF_SALAO, Context.MODE_PRIVATE);
-        sp.edit().putString(key, value).apply();
-    }
-
-    private String getSPRefString(Context context, String key ){
-        SharedPreferences sp = context.getSharedPreferences(REF_SALAO, Context.MODE_PRIVATE);
-        String value = sp.getString(key, "");
-        return( value );
-    }
-
-
-    //CALL ACTIVITYS
-    private void callLoginActivity() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
-    private void callConfiguracaoIncialActivity(String etapa){
-        Intent intent = new Intent(this, TabsActivity.class);
-        intent.putExtra("etapa",etapa);
-        startActivity(intent);
-        finish();
-    }
-
-    private void callHomeActivity(){
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
     public void tabs(View view) {
         callLoginActivity();
+
     }
 }

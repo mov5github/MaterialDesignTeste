@@ -9,9 +9,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.example.lucas.materialdesignteste.fragments.FragmentCabeleireiros;
-import com.example.lucas.materialdesignteste.fragments.FragmentFuncionamento;
-import com.example.lucas.materialdesignteste.fragments.FragmentServicos;
+import com.example.lucas.materialdesignteste.fragments.configuracaoInicial.FragmentCabeleireiros;
+import com.example.lucas.materialdesignteste.fragments.configuracaoInicial.FragmentFuncionamento;
+import com.example.lucas.materialdesignteste.fragments.configuracaoInicial.FragmentServicos;
 import com.example.lucas.materialdesignteste.slidingTabLayout.SlidingTabLayout;
 import com.example.lucas.materialdesignteste.slidingTabLayout.TabsAdapter;
 
@@ -64,7 +64,7 @@ public class TabsActivity extends AppCompatActivity {
         //TABS
         mViewPager = (ViewPager) findViewById(R.id.vp_tabs_tabs);
         String[] titles = {FragmentFuncionamento.getTitulo(), FragmentServicos.getTitulo(),FragmentCabeleireiros.getTitulo()};
-        mViewPager.setAdapter(new TabsAdapter(getSupportFragmentManager(),this,titles));
+        mViewPager.setAdapter(new TabsAdapter(getSupportFragmentManager(),this,titles,"TabsActivity"));
         mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.stl_tabs_tabs);
         mSlidingTabLayout.setDistributeEvenly(true);
         mSlidingTabLayout.setViewPager(mViewPager);

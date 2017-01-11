@@ -124,8 +124,8 @@ public class User {
     public String getTipoUsuario() {
         return tipoUsuario;
     }
-    public void setTipoUsuario(String teste) {
-        this.tipoUsuario = teste;
+    public void setTipoUsuario(String tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
     }
 
     public String getRg() {

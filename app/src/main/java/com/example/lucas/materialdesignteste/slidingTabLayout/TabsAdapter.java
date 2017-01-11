@@ -6,9 +6,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.lucas.materialdesignteste.fragments.FragmentCabeleireiros;
-import com.example.lucas.materialdesignteste.fragments.FragmentFuncionamento;
-import com.example.lucas.materialdesignteste.fragments.FragmentServicos;
+import com.example.lucas.materialdesignteste.fragments.configuracaoInicial.FragmentCabeleireiros;
+import com.example.lucas.materialdesignteste.fragments.signUp2.FragmentCadastroCabeleireiro;
+import com.example.lucas.materialdesignteste.fragments.signUp2.FragmentCadastroCliente;
+import com.example.lucas.materialdesignteste.fragments.signUp2.FragmentCadastroSalao;
+import com.example.lucas.materialdesignteste.fragments.configuracaoInicial.FragmentFuncionamento;
+import com.example.lucas.materialdesignteste.fragments.configuracaoInicial.FragmentServicos;
 
 /**
  * Created by Lucas on 28/12/2016.
@@ -17,29 +20,48 @@ import com.example.lucas.materialdesignteste.fragments.FragmentServicos;
 public class TabsAdapter extends FragmentPagerAdapter {
     private Context mContext;
     private String[] titles;
+    private String mActivityName;
 
-    public TabsAdapter(FragmentManager fm, Context ctx, String[] titulos){
+    public TabsAdapter(FragmentManager fm, Context ctx, String[] titulos, String activityName){
         super(fm);
         mContext = ctx;
         titles =  titulos;
+        mActivityName = activityName;
     }
 
     @Override
     public Fragment getItem(int position) {
         Fragment frag = null;
-        switch (position){
-            case 0:
-                frag = new FragmentFuncionamento();
-                break;
-            case 1:
-                frag = new FragmentServicos();
-                break;
-            case 2:
-                frag = new FragmentCabeleireiros();
-                break;
-            default:
-                break;
+        if (mActivityName.equals("TabsActivity")){
+            switch (position){
+                case 0:
+                    frag = new FragmentFuncionamento();
+                    break;
+                case 1:
+                    frag = new FragmentServicos();
+                    break;
+                case 2:
+                    frag = new FragmentCabeleireiros();
+                    break;
+                default:
+                    break;
+            }
+        }else if (mActivityName.equals("SignUp2Activity")){
+            switch (position){
+                case 0:
+                    frag = new FragmentCadastroCliente();
+                    break;
+                case 1:
+                    frag = new FragmentCadastroSalao();
+                    break;
+                case 2:
+                    frag = new FragmentCadastroCabeleireiro();
+                    break;
+                default:
+                    break;
+            }
         }
+
 
         if (frag != null){
             Bundle bundle = new Bundle();

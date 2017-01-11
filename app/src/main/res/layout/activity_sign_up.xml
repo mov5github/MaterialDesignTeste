@@ -2,13 +2,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/activity_login"
+    android:id="@+id/activity_sign_up"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.lucas.materialdesignteste.LoginActivity">
+    tools:context="com.example.lucas.materialdesignteste.SignUpActivity">
+
+    <ProgressBar
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/sign_up_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_login"
+        android:id="@+id/toolbar_sign_up"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:minHeight="?attr/actionBarSize"
@@ -18,16 +26,16 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <include layout="@layout/content_login"/>
+    <include layout="@layout/content_sign_up"/>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_login"
+        android:id="@+id/fab_sign_up"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/ic_person_white_24dp" />
+        app:srcCompat="@drawable/ic_person_add_white_24dp" />
 
 </RelativeLayout>

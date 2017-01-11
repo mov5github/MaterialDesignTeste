@@ -30,8 +30,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".HomeActivity"></activity>
+        <activity
+            android:name=".LoginActivity"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".HomeActivity" />
+        <activity
+            android:name=".SignUpActivity"
+            android:configChanges="orientation|screenSize"></activity>
+
+        <activity
+            android:name=".SignUp2Activity"
+            android:configChanges="orientation|screenSize"></activity>
     </application>
 
 </manifest>

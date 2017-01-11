@@ -47,4 +47,10 @@
         <item>50min</item>
         <item>55min</item>
     </string-array>
+
+    <string-array name="spinner_tipo_cadastro">
+        <item>Salão</item>
+        <item>Cliente</item>
+        <item>Cabeleireiro</item>
+    </string-array>
 </resources>
