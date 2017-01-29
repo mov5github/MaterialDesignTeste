@@ -29,14 +29,12 @@ public class LoginActivity extends CommonActivity implements GoogleApiClient.OnC
     private FirebaseAuth.AuthStateListener mAuthListener;
     private User user;
 
-    private Thread mThreadNextActivity;
-
     private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i("teste","onCreate() LOGIN");
+        Log.i("script","onCreate() LOGIN");
 
         setContentView(R.layout.activity_login);
 
@@ -51,7 +49,7 @@ public class LoginActivity extends CommonActivity implements GoogleApiClient.OnC
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i("teste","onResume() LOGIN");
+        Log.i("script","onResume() LOGIN");
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP){
             mToolbar.setElevation(4 * this.getResources().getDisplayMetrics().density);
@@ -61,9 +59,10 @@ public class LoginActivity extends CommonActivity implements GoogleApiClient.OnC
     @Override
     protected void onStart() {
         super.onStart();
-        Log.i("teste","onStart() LOGIN");
+        Log.i("script","onStart() LOGIN");
         if( mAuth.getCurrentUser() != null ){
-            callConfiguracaoIncialActivity("funcionamento");
+            Bundle bundle = user.remodelUser();
+            callSplashScreen2Activity(bundle);
         }
         else{
             mAuth.addAuthStateListener( mAuthListener );
@@ -74,7 +73,7 @@ public class LoginActivity extends CommonActivity implements GoogleApiClient.OnC
     @Override
     protected void onStop() {
         super.onStop();
-        Log.i("teste","onStop() LOGIN");
+        Log.i("script","onStop() LOGIN");
 
         if( mAuthListener != null ){
             mAuth.removeAuthStateListener( mAuthListener );
@@ -84,9 +83,9 @@ public class LoginActivity extends CommonActivity implements GoogleApiClient.OnC
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i("teste","onDestroy() LOGIN");
-        if (mThreadNextActivity != null){
-            mThreadNextActivity.interrupt();
+        Log.i("script","onDestroy() LOGIN");
+        if( mAuthListener != null ){
+            mAuth.removeAuthStateListener( mAuthListener );
         }
     }
 
@@ -104,7 +103,7 @@ public class LoginActivity extends CommonActivity implements GoogleApiClient.OnC
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Snackbar.make(view, "teste", Snackbar.LENGTH_LONG)
+                /*Snackbar.make(view, "script", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
                 //callSignUpActivity("salao");
                 if (validaFormulario()){
@@ -140,36 +139,36 @@ public class LoginActivity extends CommonActivity implements GoogleApiClient.OnC
     }
 
     private FirebaseAuth.AuthStateListener getFirebaseAuthResultHandler(){
-        Log.i("teste","getFirebaseAuthResultHandler() login ");
+        Log.i("script","getFirebaseAuthResultHandler() login ");
 
         FirebaseAuth.AuthStateListener callback = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                Log.i("teste","getFirebaseAuthResultHandler() onAuthStateChanged login");
+                Log.i("script","getFirebaseAuthResultHandler() onAuthStateChanged login");
 
                 FirebaseUser userFirebase = firebaseAuth.getCurrentUser();
 
                 if( userFirebase == null ){
+                    Log.i("script","getFirebaseAuthResultHandler() userFirebase == null login");
                     return;
                 }
 
                 if( user.getId() == null
                         && isNameOk( user, userFirebase ) ){
-
+                    Log.i("script","getFirebaseAuthResultHandler() set user login");
                     user.setId( userFirebase.getUid() );
                     user.setNameIfNull( userFirebase.getDisplayName() );
                     user.setEmailIfNull( userFirebase.getEmail() );
                     user.saveDB();
                 }
                 if (userFirebase.getUid()!= null && !userFirebase.getUid().isEmpty()){
-                    Log.i("teste","getFirebaseAuthResultHandler() uid != null uid = " +userFirebase.getUid());
-                    nextActivity(userFirebase.getUid());
-
-
+                    Log.i("script","getFirebaseAuthResultHandler() uid != null uid = " +userFirebase.getUid()+" login");
+                    Bundle bundle = user.remodelUser();
+                    callSplashScreen2Activity(bundle);
                 }else{
-                    Log.i("teste","getFirebaseAuthResultHandler() uid == null");
-                    nextActivity(null);
-
+                    Log.i("script","getFirebaseAuthResultHandler() uid == null login");
+                    Bundle bundle = user.remodelUser();
+                    callSplashScreen2Activity(bundle);
                 }
 
             }
@@ -185,7 +184,53 @@ public class LoginActivity extends CommonActivity implements GoogleApiClient.OnC
     }
 
 
-    private void nextActivity(final String uid) {
+
+    private void verifyLogin(){
+        Log.i("script","verifyLogin()");
+        FirebaseCrash.log("LoginActivity:verifyLogin()");
+        user.saveProviderSP( LoginActivity.this, "" );
+        mAuth.signInWithEmailAndPassword(
+                user.getEmail(),
+                user.getPassword()
+        )
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.i("script","verifyLogin() onComplete");
+
+                        if( !task.isSuccessful() ){
+                            Log.i("script","verifyLogin() onComplete !task.isSuccessful()");
+                            showSnackbar("Login falhou");
+                            closeProgressBar();
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.i("script","verifyLogin() onFailure");
+
+                FirebaseCrash.report( e );
+            }
+        });
+    }
+
+    private Boolean validaFormulario(){
+        if (emailIsValid() && passwordIsvalid()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
+    //TEXT LINK
+    public void callSignUp(View view) {
+        Log.i("script","callSignUp()");
+        callSignUpActivity();
+    }
+
+    //OLD
+    /*private void nextActivity(final String uid) {
         Log.i("teste","nextActivity()");
         mThreadNextActivity = new Thread(new Runnable() {
             @Override
@@ -197,15 +242,15 @@ public class LoginActivity extends CommonActivity implements GoogleApiClient.OnC
                         switch (verificaEtapaConfig(verificarTipousuario())){
                             case "funcionamento":
                                 Log.i("teste","nextActivity() funcionamento");
-                                callConfiguracaoIncialActivity("funcionamento");
+                                callConfiguracaoIncialActivity("funcionamento",null);
                                 break;
                             case "servicos":
                                 Log.i("teste","nextActivity() servicos");
-                                callConfiguracaoIncialActivity("servicos");
+                                callConfiguracaoIncialActivity("servicos",null);
                                 break;
                             case "cabeleireiros":
                                 Log.i("teste","nextActivity() cabeleireiro");
-                                callConfiguracaoIncialActivity("cabeleireiros");
+                                callConfiguracaoIncialActivity("cabeleireiros",null);
                                 break;
                             case "salaoCompleto":
                                 Log.i("teste","nextActivity() salao completo");
@@ -213,7 +258,7 @@ public class LoginActivity extends CommonActivity implements GoogleApiClient.OnC
                                 break;
                             case "usuarioInvalido":
                                 Log.i("teste","nextActivity() usuarioInvalido");
-                                callConfiguracaoIncialActivity("usuarioInvalido");
+                                //TODO implementar tela nextActivity com tipo usuario n identificado
                             default:
                                 break;
                         }
@@ -288,49 +333,5 @@ public class LoginActivity extends CommonActivity implements GoogleApiClient.OnC
         Log.i("teste","verificaEtapaConfigOnline()");
         //TODO implementar verificaçao etapa ONLINE
         return "novo";
-    }
-
-    private void verifyLogin(){
-        Log.i("teste","verifyLogin()");
-        FirebaseCrash.log("LoginActivity:verifyLogin()");
-        user.saveProviderSP( LoginActivity.this, "" );
-        mAuth.signInWithEmailAndPassword(
-                user.getEmail(),
-                user.getPassword()
-        )
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.i("teste","verifyLogin() onComplete");
-
-                        if( !task.isSuccessful() ){
-                            Log.i("teste","verifyLogin() onComplete !task.isSuccessful()");
-                            showSnackbar("Login falhou");
-                            closeProgressBar();
-                        }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.i("teste","verifyLogin() onFailure");
-
-                FirebaseCrash.report( e );
-            }
-        });
-    }
-
-    private Boolean validaFormulario(){
-        if (emailIsValid() && passwordIsvalid()){
-            return true;
-        }else{
-            return false;
-        }
-    }
-
-
-    //TEXT LINK
-    public void callSignUp(View view) {
-        Log.i("teste","callSignUp()");
-        callSignUpActivity("frist");
-    }
+    }*/
 }

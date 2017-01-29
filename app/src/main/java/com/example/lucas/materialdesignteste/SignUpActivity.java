@@ -4,11 +4,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -17,13 +15,11 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.lucas.materialdesignteste.domain.User;
-import com.example.lucas.materialdesignteste.fragments.signUp.FragmentCadastro;
+import com.example.lucas.materialdesignteste.fragments.signUp.FragmentCadastroBasico;
 import com.example.lucas.materialdesignteste.fragments.signUp.FragmentTipoCadastro;
-import com.example.lucas.materialdesignteste.slidingTabLayout.SlidingTabLayout;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -41,17 +37,14 @@ import com.google.firebase.database.DatabaseReference;
 public class SignUpActivity extends CommonActivity implements DatabaseReference.CompletionListener {
     private Toolbar mToolbar;
     private FloatingActionButton fab;
-    private SlidingTabLayout mSlidingTabLayout;
-    private ViewPager mViewPager;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private User user;
-    private AutoCompleteTextView name;
-    private Spinner spinnerTipoCadastro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i("script","onCreate() SIGNUP");
         setContentView(R.layout.activity_sign_up);
         initViews();
         initUser();
@@ -76,7 +69,7 @@ public class SignUpActivity extends CommonActivity implements DatabaseReference.
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i("teste","onResume() SIGNUP");
+        Log.i("script","onResume() SIGNUP");
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP){
             mToolbar.setElevation(4 * this.getResources().getDisplayMetrics().density);
@@ -86,12 +79,15 @@ public class SignUpActivity extends CommonActivity implements DatabaseReference.
     @Override
     protected void onStart() {
         super.onStart();
+        Log.i("script","onStart() SIGNUP");
         mAuth.addAuthStateListener(mAuthStateListener);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        Log.i("script","onStop() SIGNUP");
+
         if( mAuthStateListener != null ){
             mAuth.removeAuthStateListener(mAuthStateListener);
         }
@@ -116,7 +112,7 @@ public class SignUpActivity extends CommonActivity implements DatabaseReference.
 
     @Override
     protected void initViews() {
-        Log.i("teste","initViews()");
+        Log.i("script","initViews()");
         if (progressBar == null){
             progressBar = (ProgressBar) findViewById(R.id.sign_up_progress);
         }
@@ -128,6 +124,12 @@ public class SignUpActivity extends CommonActivity implements DatabaseReference.
             mToolbar.setLogo(R.mipmap.ic_launcher);
             setSupportActionBar(mToolbar);
         }
+        //FRAGMENT
+        if (getSupportFragmentManager().getFragments() == null || getSupportFragmentManager().getFragments().size() == 0){
+            Log.i("script","getSupportFragmentManager()== null set fragment TipoCadastro  ");
+            FragmentCadastroBasico fragmentCadastroBasico = new FragmentCadastroBasico();
+            replaceFragment(fragmentCadastroBasico);
+        }
         //FLOATING ACTION BUTTON
         if (fab == null){
             fab = (FloatingActionButton) findViewById(R.id.fab_sign_up);
@@ -137,14 +139,13 @@ public class SignUpActivity extends CommonActivity implements DatabaseReference.
                     /*Snackbar.make(view, "teste", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();*/
                     openProgressBar();
-                    if (email == null && password == null && passwordAgain == null && spinnerTipoCadastro == null) {
-                        Log.i("teste","init email password passwordagain");
+                    if (email == null && password == null && passwordAgain == null) {
+                        Log.i("script","init email password passwordagain");
                         FragmentManager fragmentManager = getSupportFragmentManager();
-                        FragmentCadastro frag = (FragmentCadastro) fragmentManager.findFragmentById(R.id.content_sign_up);
+                        FragmentCadastroBasico frag = (FragmentCadastroBasico) fragmentManager.findFragmentById(R.id.content_sign_up);
                         email = (AutoCompleteTextView) frag.getEmail();
                         password = (EditText) frag.getPassword();
                         passwordAgain = (EditText) frag.getPasswordAgain();
-                        spinnerTipoCadastro = (Spinner) frag.getSpinnerTipoCadastro();
                     }
                     if (formularioIsValid()) {
                         initUser();
@@ -157,13 +158,7 @@ public class SignUpActivity extends CommonActivity implements DatabaseReference.
             });
         }
 
-        //FORMULARIO
-        if (getSupportFragmentManager().getFragments() == null || getSupportFragmentManager().getFragments().size() == 0){
-            Log.i("teste","getSupportFragmentManager()== null set fragment TipoCadastro  ");
-            fab.setVisibility(View.INVISIBLE);
-            FragmentTipoCadastro fragmentTipoCadastro = new FragmentTipoCadastro();
-            replaceFragment(fragmentTipoCadastro);
-        }
+
 
     }
 
@@ -174,12 +169,11 @@ public class SignUpActivity extends CommonActivity implements DatabaseReference.
             Log.i("teste","initUser() SIGNUP user ==null");
             user = new User();
         }
-        if (email != null && password != null && spinnerTipoCadastro != null){
+        if (email != null && password != null){
             Log.i("teste","initUser() SIGNUP set name email password");
             user.setEmail( email.getText().toString() );
             user.setPassword( password.getText().toString() );
-            user.setTipoUsuario(spinnerTipoCadastro.getSelectedItem().toString());
-            Log.i("teste",user.getTipoUsuario());
+            user.setNivelUsuario("1");
         }
     }
 
@@ -194,11 +188,8 @@ public class SignUpActivity extends CommonActivity implements DatabaseReference.
 
     private void saveUser(){
 
-        if (user.getEmail().isEmpty()){
-            Log.w("BrokenLogic","Nao foi possivel saveUser getEmail vazio");
-            closeProgressBar();
-        }else if (user.getPassword().isEmpty()){
-            Log.w("BrokenLogic","Nao foi possivel saveUser getPassword vazio");
+        if (user.getEmail() == null || user.getEmail().isEmpty() || user.getPassword() == null || user.getPassword().isEmpty() || user.getNivelUsuario() == null || user.getNivelUsuario().isEmpty() || !user.getNivelUsuario().equals("1")){
+            Log.w("BrokenLogic","Nao foi possivel saveUser getEmail || getPassword || getNivel vazio");
             closeProgressBar();
         }else {
             mAuth.createUserWithEmailAndPassword(
@@ -230,33 +221,6 @@ public class SignUpActivity extends CommonActivity implements DatabaseReference.
         if (emailIsValid() && passwordIsvalid() && passwordAgainIsvalid()){
             return true;
         }else return false;
-    }
-
-
-
-
-    public void iniciarFragCadastro(View view) {
-        Log.i("teste","iniciarFragCadastro()");
-        FragmentCadastro fragmentCadastro = new FragmentCadastro();
-        Bundle bundle = new Bundle();
-        if (view.getId() == R.id.btn_cadastro_salao){
-            Log.i("teste","iniciarFragCadastro() salao");
-            bundle.putString("tipo","salao");
-        }else if (view.getId() == R.id.btn_cadastro_cliente){
-            Log.i("teste","iniciarFragCadastro() cliente");
-            bundle.putString("tipo","cliente");
-        }else if (view.getId() == R.id.btn_cadastro_cabeleireiro){
-            Log.i("teste","iniciarFragCadastro() cabeleireiro");
-            bundle.putString("tipo","cabeleireiro");
-        }
-        fragmentCadastro.setArguments(bundle);
-        replaceFragment(fragmentCadastro);
-        fab.setVisibility(View.VISIBLE);
-        /*FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentCadastro frag = (FragmentCadastro) fragmentManager.findFragmentById(R.id.content_sign_up);
-        email = (AutoCompleteTextView) frag.getEmail();
-        password = (EditText) frag.getPassword();
-        passwordAgain = (EditText) frag.getPasswordAgain();*/
     }
 
     private void replaceFragment(Fragment fragment) {

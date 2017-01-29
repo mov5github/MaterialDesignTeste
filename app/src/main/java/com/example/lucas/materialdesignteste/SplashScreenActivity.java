@@ -16,34 +16,52 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lucas.materialdesignteste.domain.User;
+import com.example.lucas.materialdesignteste.domain.util.LibraryClass;
+import com.example.lucas.materialdesignteste.threads.SplashScreenSecondThread;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.crash.FirebaseCrash;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class SplashScreenActivity extends CommonActivity implements GoogleApiClient.OnConnectionFailedListener  {
-    private Boolean splashIniciada = false;
-    private Boolean splashCompleta = false;
-    private Boolean verificarUsuarioLogadoIniciado = false;
+    //VIEWS
     private ImageView splashLogoMov5;
     private ImageView splashLogoSalao20;
     private TextView labelPoweredBy;
     private TextView labelCarregando;
-    ProgressBar progressBarSalao20;
+    private ProgressBar progressBarSalao20;
 
-    private Handler handlerSplashScreenCompleta= new Handler();
+    //CONTROLE
+    private Boolean splashIniciada = false;
+    private Boolean splashCompleta = false;
+    private Boolean verificarUsuarioLogadoIniciado = false;
+    private Boolean limiteVerificacaoUsuarioLogadoIniciado = false;
+
+    /*private Handler handlerSplashScreenCompleta= new Handler();
     private Handler handlerAnimationSplashSalao20= new Handler();
     private Handler handlerReverseAnimationSplashMov5= new Handler();
     private Handler handlerTempoMaximoVerificacao = new Handler();
-    //private Handler handlerVerifyLogged = new Handler();
     private Thread threadVerificarUsuarioLogado;
+    private Handler handlerStopVerifyTipoUsuarioOnline = new Handler();*/
 
+    private Handler handlerUIThread;
+    private Thread secondThread;
+    private Thread threadAnimacaoSplash;
 
     //  FIREBASE AUTH
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private User user;
+
+    private String codUnico = null;
+
 
 
 
@@ -53,10 +71,11 @@ public class SplashScreenActivity extends CommonActivity implements GoogleApiCli
         Log.i("teste","onCreate()");
         setContentView(R.layout.activity_splash_screen);
 
-        mAuth = FirebaseAuth.getInstance();
-        mAuthListener = getFirebaseAuthResultHandler();
+        //mAuth = FirebaseAuth.getInstance();
+       // mAuthListener = getFirebaseAuthResultHandler();
         initViews();
-        initUser();
+        //initUser();
+        initThreads();
 
 
     }
@@ -67,12 +86,23 @@ public class SplashScreenActivity extends CommonActivity implements GoogleApiCli
         super.onStart();
         Log.i("teste","onStart()");
 
-        if (!verificarUsuarioLogadoIniciado){
+        /*if (!verificarUsuarioLogadoIniciado){
             verificarUsuarioLogado();
+        }*/
+
+        if (!secondThread.isAlive()){
+            Log.i("teste","onStart() secondthread iniciada");
+            secondThread.start();
         }
 
         if (!splashIniciada){
+            Log.i("teste","onStart() splashscreen iniciada");
             splashScreenInicial();
+        }
+
+        if (!limiteVerificacaoUsuarioLogadoIniciado){
+            Log.i("teste","onStart() timer limite verificacao iniciada");
+            limiteVerificacaoUsuarioLogado();
         }
     }
 
@@ -87,12 +117,17 @@ public class SplashScreenActivity extends CommonActivity implements GoogleApiCli
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        threadVerificarUsuarioLogado.interrupt();
+        /*threadVerificarUsuarioLogado.interrupt();
         handlerTempoMaximoVerificacao.removeCallbacksAndMessages(null);
-        //handlerVerifyLogged.removeCallbacksAndMessages(null);
         handlerAnimationSplashSalao20.removeCallbacksAndMessages(null);
         handlerSplashScreenCompleta.removeCallbacksAndMessages(null);
-        handlerReverseAnimationSplashMov5.removeCallbacksAndMessages(null);
+        handlerReverseAnimationSplashMov5.removeCallbacksAndMessages(null);*/
+        handlerUIThread.removeCallbacksAndMessages(null);
+        if (secondThread != null){
+            if (secondThread.isAlive()){
+                secondThread.interrupt();
+            }
+        }
 
     }
 
@@ -128,63 +163,17 @@ public class SplashScreenActivity extends CommonActivity implements GoogleApiCli
         showSnackbar( connectionResult.getErrorMessage() );
     }
 
-    private FirebaseAuth.AuthStateListener getFirebaseAuthResultHandler(){
-        FirebaseAuth.AuthStateListener callback = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-
-                FirebaseUser userFirebase = firebaseAuth.getCurrentUser();
-
-                if( userFirebase == null ){
-                    return;
-                }
-
-                if( user.getId() == null
-                        && isNameOk( user, userFirebase ) ){
-
-                    user.setId( userFirebase.getUid() );
-                    user.setNameIfNull( userFirebase.getDisplayName() );
-                    user.setEmailIfNull( userFirebase.getEmail() );
-                    user.saveDB();
-                }
-                if (userFirebase.getUid()!= null && !userFirebase.getUid().isEmpty()){
-                    //callConfiguracaoInicialActivity(userFirebase.getUid());
-                    //verificarTipousuario(userFirebase.getUid());
-                    /*if (configInicialIsOk(userFirebase.getUid())){
-                        callHomeActivity();
-                    }*/
-                    Log.i("teste","getFirebaseAuthResultHandler() uid != null");
-                    nextActivity(userFirebase.getUid());
-
-
-                }else{
-                    //callConfiguracaoInicialActivity("");
-                    //verificarTipousuario(null);
-                    /*if (configInicialIsOk(null)){
-                        callHomeActivity();
-                    }*/
-                    Log.i("teste","getFirebaseAuthResultHandler() uid == null");
-                    nextActivity(null);
-
-                }
-
-            }
-        };
-        return( callback );
+    private void initThreads(){
+        secondThread = new SplashScreenSecondThread(this);
+        handlerUIThread = new Handler();
     }
 
 
-    private boolean isNameOk( User user, FirebaseUser firebaseUser ){
-        return(
-                user.getName() != null
-                        || firebaseUser.getDisplayName() != null
-        );
-    }
 
     private void splashScreenInicial(){
         Log.i("teste","splashScreenInicial() rodadando");
 
-        int tempoAnimacao = 3000;
+        int tempoAnimacao = 2000;
         final AlphaAnimation animation1 = new AlphaAnimation(0.0f,1.0f);
         animation1.setDuration(tempoAnimacao);
         animation1.setFillAfter(true);
@@ -200,7 +189,7 @@ public class SplashScreenActivity extends CommonActivity implements GoogleApiCli
         labelPoweredBy.startAnimation(animation1);
 
 
-        handlerReverseAnimationSplashMov5.postDelayed(new Runnable() {
+        handlerUIThread.postDelayed(new Runnable() {
             @Override
             public void run() {
                 splashLogoMov5.startAnimation(animation1Reverse);
@@ -208,177 +197,47 @@ public class SplashScreenActivity extends CommonActivity implements GoogleApiCli
             }
         },(tempoAnimacao+250));
 
-        handlerAnimationSplashSalao20.postDelayed(new Runnable() {
+        handlerUIThread.postDelayed(new Runnable() {
             @Override
             public void run() {
                 splashLogoSalao20.setVisibility(View.VISIBLE);
                 splashLogoSalao20.startAnimation(animation1);
             }
-        },(6500));
+        },(4500));
 
-        handlerSplashScreenCompleta.postDelayed(new Runnable() {
+        handlerUIThread.postDelayed(new Runnable() {
             @Override
             public void run() {
                 Log.i("teste","splashScreenInicial() completa");
                 splashCompleta = true;
             }
-        },(10000));
-
+        },(7000));
 
         splashIniciada = true;
 
     }
 
-
-
-    private void verificarUsuarioLogado() {
-        Log.i("teste","verificarUsuarioLogado()");
-        final int maxTempoVerificacao = 20000;
-        threadVerificarUsuarioLogado = new Thread(new Runnable() {
+    private void limiteVerificacaoUsuarioLogado(){
+        final int maxTempoVerificacao = 11000;
+        handlerUIThread.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Log.i("teste","threadVerificarUsuarioLogado run()");
-                verifyLogged();
-
-                /*handlerVerifyLogged.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.i("teste","verificarUsuarioLogado() handlerVerifyLogged run()");
-                        verifyLogged();
-                    }
-                },1000);*/
-
-                handlerTempoMaximoVerificacao.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.i("teste","verificarUsuarioLogado() handlerTempoMaximoVerificacao run()");
-                        callLoginActivity();
-                    }
-                },maxTempoVerificacao);
-
+                Log.i("teste","limiteVerificacaoUsuarioLogado  runnable maxTempoVerifiacaçao run()");
+                callLoginActivity();
             }
-        });
-        threadVerificarUsuarioLogado.start();
-
+        },(maxTempoVerificacao));
     }
-
-    private void verifyLogged(){
-        if( mAuth.getCurrentUser() != null ){
-            if (mAuth.getCurrentUser().getUid() != null && !mAuth.getCurrentUser().getUid().isEmpty()){
-                nextActivity(mAuth.getCurrentUser().getUid());
-            }else nextActivity(null);
-        }
-        else{
-            mAuth.addAuthStateListener( mAuthListener );
-        }
-    }
-
-    private void nextActivity(String uid) {
-        Log.i("teste","nextActivity()");
-        if (uid != null){
-            REF_SALAO = REF_SALAO+uid;
-            if (verificaEtapaConfig(verificarTipousuario()) != null){
-                Log.i("teste","nextActivity() aguardando splash completa");
-                while (!splashCompleta){
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                Log.i("teste","nextActivity() splash completa");
-                switch (verificaEtapaConfig(verificarTipousuario())){
-                    case "funcionamento":
-                        callConfiguracaoIncialActivity("funcionamento");
-                        break;
-                    case "servicos":
-                        callConfiguracaoIncialActivity("servicos");
-                        break;
-                    case "cabeleireiros":
-                        callConfiguracaoIncialActivity("cabeleireiros");
-                        break;
-                    case "salaoCompleto":
-                        callHomeActivity();
-                        break;
-                    default:
-                        Log.i("teste","nextActivity() default");
-                        callConfiguracaoIncialActivity("funcionamento");
-                        break;
-                }
-            }
-        }else {
-            //TODO implementar uid == null
-        }
-    }
-
-
-    private String verificarTipousuario() {
-        Log.i("teste","verificarTipousuario()");
-        if (getSPRefString(getApplicationContext(),"tipousuario").equals("salao") || getSPRefString(getApplicationContext(),"tipousuario").equals("cliente") || getSPRefString(getApplicationContext(),"tipousuario").equals("cabeleireiro")){
-            return getSPRefString(getApplicationContext(),"tipousuario");
-        }else {
-            return verificarTipoUsuarioOnline();
-        }
-    }
-
-    private String verificarTipoUsuarioOnline() {
-        //TODO implementar verificaçao tipoUsuario online
-        return "online";
-    }
-
-
-    private String verificaEtapaConfig(String tipoUsuario) {
-        Log.i("teste","verificaEtapaConfig()");
-        if (tipoUsuario != null){
-            if (tipoUsuario.equals("salao")){
-                if (getSPRefBoolean(getApplicationContext(),"funcionamento") || getSPRefBoolean(getApplicationContext(),"servicos") || getSPRefBoolean(getApplicationContext(),"cabeleireiros")){
-                    if (getSPRefBoolean(getApplicationContext(),"funcionamento")){
-                        if (getSPRefBoolean(getApplicationContext(),"servicos")){
-                            if (getSPRefBoolean(getApplicationContext(),"cabeleireiros")){
-                                return "salaoCompleto";
-                            }else{
-                                return "cabeleireiros";
-                            }
-                        }else {
-                            return "servicos";
-                        }
-                    }else {
-                        return "funcionamento";
-                    }
-                }else {
-                    return verificaEtapaConfigOnline(tipoUsuario);
-                }
-
-            }else if (tipoUsuario.equals("cliente")){
-                //TODO implementar verificaçao etapa cliente
-                return "cliente";
-
-            }else if (tipoUsuario.equals("cabeleireiro")){
-                //TODO implementar verificaçao etapa cabeleireiro
-                return "cabeleireiro";
-            }else {
-                return "usuarioInvalido";
-            }
-
-        }else {
-            //TODO implementar tipoUsuario recebendo null
-            return null;
-        }
-
-    }
-
-    private String verificaEtapaConfigOnline(String tipoUsuario) {
-        Log.i("teste","verificaEtapaConfigOnline()");
-        //TODO implementar verificaçao etapa ONLINE
-        return "novo";
-    }
-
-
-
 
 
     public void tabs(View view) {
         callLoginActivity();
 
     }
+
+    //GETTERS
+    public Boolean getSplashCompleta() {
+        return splashCompleta;
+    }
+
+
 }

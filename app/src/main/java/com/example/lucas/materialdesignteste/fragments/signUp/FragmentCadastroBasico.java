@@ -17,19 +17,16 @@ import com.example.lucas.materialdesignteste.R;
  * Created by Lucas on 10/01/2017.
  */
 
-public class FragmentCadastro extends Fragment{
+public class FragmentCadastroBasico extends Fragment{
     private AutoCompleteTextView email;
     private EditText password;
     private EditText passwordAgain;
-    private String tipoCadastro;
-    private Spinner spinnerTipoCadastro;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i("teste","onCreate() fragment cadastro");
-        Bundle bundle = getArguments();
-        tipoCadastro = bundle.getString("tipo");
+        Log.i("script","onCreate() fragment cadastro basico");
+        
     }
 
     @Nullable
@@ -44,14 +41,7 @@ public class FragmentCadastro extends Fragment{
         email = (AutoCompleteTextView) view.findViewById(R.id.email);
         password = (EditText) view.findViewById(R.id.password);
         passwordAgain = (EditText) view.findViewById(R.id.password_again);
-        spinnerTipoCadastro = (Spinner) view.findViewById(R.id.spinner_tipo_cadastro);
-        if (tipoCadastro.equals("salao")){
-            spinnerTipoCadastro.setSelection(0);
-        }else if (tipoCadastro.equals("cliente")){
-            spinnerTipoCadastro.setSelection(1);
-        }else if (tipoCadastro.equals("cabeleireiro")){
-            spinnerTipoCadastro.setSelection(2);
-        }
+
     }
 
     //GETTERS
@@ -67,7 +57,5 @@ public class FragmentCadastro extends Fragment{
         return email;
     }
 
-    public Spinner getSpinnerTipoCadastro() {
-        return spinnerTipoCadastro;
-    }
+
 }

@@ -1,9 +1,12 @@
 package com.example.lucas.materialdesignteste.domain;
 
 import android.content.Context;
+import android.os.Bundle;
 
 import com.example.lucas.materialdesignteste.domain.util.LibraryClass;
 import com.google.firebase.database.DatabaseReference;
+
+import java.util.ArrayList;
 
 /**
  * Created by Lucas on 03/01/2017.
@@ -12,7 +15,6 @@ import com.google.firebase.database.DatabaseReference;
 public class User {
     public static String PROVIDER = "com.example.lucas.materialdesignteste.domain.User.PROVIDER";
 
-    private String inicialConfig;
 
     private String id;
     private String name;
@@ -22,6 +24,7 @@ public class User {
     private String tipoUsuario;
     private String telefone1;
     private String telefone2;
+    private String nivelUsuario;
     //cliente / responsavel
     private String rg;
     private String dataNascimento;
@@ -34,6 +37,10 @@ public class User {
     private String rua;
     private String numEndereco;
     private String complementoEndereco;
+    private String codUnico;
+    private Boolean etapaFuncionamentoOK;
+    private Boolean etapaServicosOK;
+    private Boolean etapaCabeleireirosOK;
 
 
     public User(){}
@@ -75,6 +82,23 @@ public class User {
             this.tipoUsuario = tipoUsuario;
         }
 
+    }
+
+    public Bundle remodelUser(){
+        Bundle bundle = new Bundle();
+        if (id != null && !id.isEmpty()){
+            bundle.putString("id",id);
+        }
+        if (tipoUsuario!= null && !tipoUsuario.isEmpty()){
+            bundle.putString("tipoUsuario",tipoUsuario);
+        }
+        if (nivelUsuario!= null && !nivelUsuario.isEmpty()){
+            bundle.putString("nivelUsuario",nivelUsuario);
+        }
+        if (codUnico!= null && !codUnico.isEmpty()){
+            bundle.putString("codUnico",codUnico);
+        }
+        return bundle;
     }
 
     public void saveProviderSP(Context context, String token ){
@@ -213,6 +237,40 @@ public class User {
         this.rua = rua;
     }
 
+    public String getCodUnico() {
+        return codUnico;
+    }
+    public void setCodUnico(String codUnico) {
+        this.codUnico = codUnico;
+    }
+
+    public String getNivelUsuario() {
+        return nivelUsuario;
+    }
+    public void setNivelUsuario(String nivelUsuario) {
+        this.nivelUsuario = nivelUsuario;
+    }
+
+    public Boolean getEtapaServicosOK() {
+        return etapaServicosOK;
+    }
+    public void setEtapaServicosOK(Boolean etapaServicosOK) {
+        this.etapaServicosOK = etapaServicosOK;
+    }
+
+    public Boolean getEtapaCabeleireirosOK() {
+        return etapaCabeleireirosOK;
+    }
+    public void setEtapaCabeleireirosOK(Boolean etapaCabeleireirosOK) {
+        this.etapaCabeleireirosOK = etapaCabeleireirosOK;
+    }
+
+    public Boolean getEtapaFuncionamentoOK() {
+        return etapaFuncionamentoOK;
+    }
+    public void setEtapaFuncionamentoOK(Boolean etapaFuncionamentoOK) {
+        this.etapaFuncionamentoOK = etapaFuncionamentoOK;
+    }
 
 
 

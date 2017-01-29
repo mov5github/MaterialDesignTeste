@@ -11,12 +11,7 @@
     android:background="#000000"
     tools:context="com.example.lucas.materialdesignteste.SplashScreenActivity">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="tabs"
-        android:onClick="tabs"/>
+
 
     <TextView
         android:id="@+id/label_powered_by"
@@ -45,10 +40,10 @@
 
     <ImageView
         android:id="@+id/splash_logo_salao20"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
         android:scaleType="centerInside"
-        android:src="@mipmap/ic_launcher"
+        android:src="@drawable/splash_salao"
         android:layout_centerInParent="true"
         android:visibility="invisible"/>
 
