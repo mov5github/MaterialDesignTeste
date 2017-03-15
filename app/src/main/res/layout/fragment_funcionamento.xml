@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -8,8 +8,354 @@
     android:paddingTop="@dimen/activity_vertical_margin">
 
     <TextView
+        android:id="@+id/label_horario_funcionamento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="FRAG FUNCIONAMENTO"/>
+        android:text="Defina o horário de funcionamento do salão:"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="12dp"/>
 
-</LinearLayout>
+    <ScrollView
+        android:id="@+id/funcionamento_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/label_horario_funcionamento"
+        android:layout_above="@+id/btn_salvar_funcionamento">
+
+        <TableLayout
+            android:id="@+id/email_sign_up_form"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Dia"
+                    android:textAlignment="center"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Abre"
+                    android:textAlignment="center"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Fecha"
+                    android:textAlignment="center"/>
+
+            </TableRow>
+
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp">
+
+                <CheckBox
+                    android:id="@+id/segunda"
+                    android:text="Segunda"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="selecionaDia"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"/>
+
+                <TextView
+                    android:id="@+id/abre_segunda"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="--:--"
+                    android:textAlignment="center"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:onClick="chamaTimePicker"
+                    android:visibility="invisible"/>
+
+                <TextView
+                    android:id="@+id/fecha_segunda"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="--:--"
+                    android:textAlignment="center"
+                    android:onClick="chamaTimePicker"
+                    android:visibility="invisible"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp">
+
+                <CheckBox
+                    android:id="@+id/terca"
+                    android:text="Terça"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="selecionaDia"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"/>
+
+                <TextView
+                    android:id="@+id/abre_terca"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="--:--"
+                    android:textAlignment="center"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:onClick="chamaTimePicker"
+                    android:visibility="invisible"/>
+
+                <TextView
+                    android:id="@+id/fecha_terca"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="--:--"
+                    android:textAlignment="center"
+                    android:onClick="chamaTimePicker"
+                    android:visibility="invisible"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp">
+
+                <CheckBox
+                    android:id="@+id/quarta"
+                    android:text="Quarta"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="selecionaDia"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"/>
+
+                <TextView
+                    android:id="@+id/abre_quarta"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="--:--"
+                    android:textAlignment="center"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:onClick="chamaTimePicker"
+                    android:visibility="invisible"/>
+
+                <TextView
+                    android:id="@+id/fecha_quarta"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="--:--"
+                    android:textAlignment="center"
+                    android:onClick="chamaTimePicker"
+                    android:visibility="invisible"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp">
+
+                <CheckBox
+                    android:id="@+id/quinta"
+                    android:text="Quinta"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="selecionaDia"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"/>
+
+                <TextView
+                    android:id="@+id/abre_quinta"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="--:--"
+                    android:textAlignment="center"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:onClick="chamaTimePicker"
+                    android:visibility="invisible"/>
+
+                <TextView
+                    android:id="@+id/fecha_quinta"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="--:--"
+                    android:textAlignment="center"
+                    android:onClick="chamaTimePicker"
+                    android:visibility="invisible"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp">
+
+                <CheckBox
+                    android:id="@+id/sexta"
+                    android:text="Sexta"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="selecionaDia"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"/>
+
+                <TextView
+                    android:id="@+id/abre_sexta"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="--:--"
+                    android:textAlignment="center"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:onClick="chamaTimePicker"
+                    android:visibility="invisible"/>
+
+                <TextView
+                    android:id="@+id/fecha_sexta"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="--:--"
+                    android:textAlignment="center"
+                    android:onClick="chamaTimePicker"
+                    android:visibility="invisible"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp">
+
+                <CheckBox
+                    android:id="@+id/sabado"
+                    android:text="Sabado"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="selecionaDia"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"/>
+
+                <TextView
+                    android:id="@+id/abre_sabado"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="--:--"
+                    android:textAlignment="center"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:onClick="chamaTimePicker"
+                    android:visibility="invisible"/>
+
+                <TextView
+                    android:id="@+id/fecha_sabado"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="--:--"
+                    android:textAlignment="center"
+                    android:onClick="chamaTimePicker"
+                    android:visibility="invisible"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp">
+
+                <CheckBox
+                    android:id="@+id/domingo"
+                    android:text="Domingo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="selecionaDia"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"/>
+
+                <TextView
+                    android:id="@+id/abre_domingo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="--:--"
+                    android:textAlignment="center"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:onClick="chamaTimePicker"
+                    android:visibility="invisible"/>
+
+                <TextView
+                    android:id="@+id/fecha_domingo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="--:--"
+                    android:textAlignment="center"
+                    android:onClick="chamaTimePicker"
+                    android:visibility="invisible"/>
+            </TableRow>
+
+        </TableLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btn_salvar_funcionamento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Salvar"
+        android:onClick="proximaEtapa"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"/>
+
+    <Button
+        android:id="@+id/btn_dados_salvos_funcionamento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="dados salvos"
+        android:onClick="dadosSalvos"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="15dp"/>
+
+
+
+</RelativeLayout>

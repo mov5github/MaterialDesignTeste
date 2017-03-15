@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MaterialDesignTeste</string>
+    <string name="app_name">Salão 2.0</string>
 
     <!-- Strings related to login -->
     <string name="action_sign_in">Logar</string>
@@ -13,6 +13,7 @@
     <string name="action_sign_up_call">Cadastrar</string>
     <string name="action_sign_up_short">Cadastro</string>
     <string name="action_reset_call">Recuperar acesso</string>
+    <string name="ajuda">Ajuda</string>
     <string name="link_accounts">Link contas</string>
     <string name="logout">Logout</string>
     <string name="prompt_data_nascimento">Data de Nascimento</string>
@@ -55,4 +56,11 @@
     <string name="title_activity_sign_up2">SignUpActivity2</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_catastro">CadastroActivity</string>
+
+    <!-- Configuraçao Inical Activity  -->
+    <string name="nome_servico_bold_html">Serviço :</string>
+    <string name="preco_servico_bold_html">Preço :</string>
+    <string name="duracao_servico_bold_html">Duração :</string>
+    <string name="descricao_servico_bold_html">Descrição :</string>
+
 </resources>

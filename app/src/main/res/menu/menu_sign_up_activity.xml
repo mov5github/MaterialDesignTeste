@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".SignUp2Activity">
     <item
-        android:id="@+id/action_item1"
+        android:id="@+id/action_ajuda"
         android:orderInCategory="100"
-        android:title="ITEM1"
+        android:title="@string/ajuda"
         app:showAsAction="never" />
 
 </menu>

@@ -5,7 +5,7 @@
     android:id="@+id/activity_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.lucas.materialdesignteste.LoginActivity">
+    tools:context="com.example.lucas.materialdesignteste.activitys.LoginActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_login"
@@ -28,6 +28,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/ic_person_white_24dp" />
+        app:srcCompat="@mipmap/ic_person_white_24dp" />
 
 </RelativeLayout>

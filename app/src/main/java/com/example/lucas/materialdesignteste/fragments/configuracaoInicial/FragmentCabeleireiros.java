@@ -25,4 +25,8 @@ public class FragmentCabeleireiros extends Fragment {
     public static String getTitulo() {
         return titulo;
     }
+
+    public boolean preenchimentoIsValid(){
+        return false;
+    }
 }

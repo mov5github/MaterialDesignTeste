@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -8,9 +9,256 @@
     android:paddingTop="@dimen/activity_vertical_margin">
 
     <TextView
+        android:id="@+id/label_titulo"
+        android:text="Defina os serviços oferecidos pelo salão:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="FRAG SERVICOS"/>
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="15dp"/>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="5dp">
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/form_nome_servico"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <AutoCompleteTextView
+                android:id="@+id/nome_servico"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nome do serviço"
+                android:inputType="textPersonName"
+                android:maxLines="1" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <Spinner
+            android:id="@+id/spinner_icones"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom">
+        </Spinner>
+    </TableRow>
+
+    <!--
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="5dp">
 
 
-</LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Preço :"
+            android:layout_marginRight="3dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginBottom="1dp"
+            android:layout_gravity="bottom"/>
+
+        <EditText
+            android:id="@+id/preco_servico"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_gravity="bottom"
+            android:inputType="number"
+            android:maxLines="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Duração:"
+            android:layout_marginRight="3dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginBottom="1dp"
+            android:layout_gravity="bottom"/>
+
+        <Spinner
+            android:id="@+id/spinner_duracao_servico_horas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:entries="@array/spinner_duracao_servico_horas">
+        </Spinner>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="e"
+            android:layout_marginRight="2dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginBottom="1dp"
+            android:layout_gravity="bottom"/>
+
+        <Spinner
+            android:id="@+id/spinner_duracao_servico_minutos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:entries="@array/spinner_duracao_servico_minutos">
+        </Spinner>
+
+    </TableRow> -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp">
+
+        <TextView
+            android:id="@+id/label_preco"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:text="Preço :"
+            android:layout_marginLeft="2dp"
+            android:layout_marginStart="2dp"/>
+
+        <TextView
+            android:id="@+id/label_duracao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Duração :"
+            android:layout_toRightOf="@+id/preco_servico"
+            android:layout_toEndOf="@+id/preco_servico"
+            android:layout_marginLeft="3dp"
+            android:layout_marginStart="3dp"/>
+
+        <EditText
+            android:id="@+id/preco_servico"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"
+            android:inputType="number"
+            android:maxLines="1"
+            android:layout_toLeftOf="@+id/spinner_duracao_servico_horas"
+            android:layout_toStartOf="@+id/spinner_duracao_servico_horas"
+            android:layout_below="@+id/label_preco"/>
+
+        <Spinner
+            android:id="@+id/spinner_duracao_servico_horas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/spinner_duracao_servico_horas"
+            android:layout_below="@+id/label_duracao"
+            android:layout_alignBaseline="@+id/preco_servico"
+            android:layout_toLeftOf="@+id/label_e"
+            android:layout_toStartOf="@+id/label_e">
+        </Spinner>
+
+        <TextView
+            android:id="@+id/label_e"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="e"
+            android:layout_marginRight="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginStart="1dp"
+            android:layout_toLeftOf="@+id/spinner_duracao_servico_minutos"
+            android:layout_toStartOf="@+id/spinner_duracao_servico_minutos"
+            android:layout_alignBaseline="@+id/preco_servico"/>
+
+        <Spinner
+            android:id="@+id/spinner_duracao_servico_minutos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/spinner_duracao_servico_minutos"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/label_duracao"
+            android:layout_alignBaseline="@+id/preco_servico">
+        </Spinner>
+
+    </RelativeLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/form_descricao_servico"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp">
+
+        <AutoCompleteTextView
+            android:id="@+id/descricao_servico"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Descriçao rápida"
+            android:inputType="textPersonName"
+            android:maxLines="1" />
+    </android.support.design.widget.TextInputLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btn_adicionar_servico"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="add"
+            android:onClick="addServico"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/label_servicos_adicionados"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Serviços adicionados:"
+            android:layout_marginBottom="5dp"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@+id/servicos_recycler_view"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/servicos_recycler_view"
+            android:scrollbars="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_above="@+id/btn_salvar_servicos"/>
+
+        <Button
+            android:id="@+id/btn_salvar_servicos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Salvar"
+            android:onClick="proximaEtapa"
+            android:layout_marginTop="15dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"/>
+
+        <Button
+            android:id="@+id/btn_dados_salvos_servicos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="dados salvos"
+            android:onClick="dadosSalvos"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="15dp"/>
+    </RelativeLayout>
+
+
+
+
+</TableLayout>

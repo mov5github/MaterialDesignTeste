@@ -6,7 +6,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
+        android:textSize="18sp"
         android:text="Selecione o tipo de cadastro :"
         android:gravity="center_horizontal"
         android:layout_marginBottom="20dp"
@@ -17,23 +17,38 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <ImageButton
-            android:id="@+id/btn_cadastro_salao"
+        <TextView
+            android:id="@+id/label_cadastro_cliente"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher"
-            android:contentDescription="btnChamarCadastroSalao"
-            android:onClick="iniciarFragCadastro"
-            android:layout_centerInParent="true"/>
+            android:textSize="16sp"
+            android:text="Cliente"
+            android:layout_marginTop="7dp"
+            android:layout_centerHorizontal="true" />
+
+        <ImageButton
+            android:id="@+id/btn_cadastro_cliente"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/ic_user_cliente"
+            android:background="#00000000"
+            android:contentDescription="btnChamarCadastroCliente"
+            android:onClick="confirmarTipoCadastro"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/label_cadastro_cliente"/>
 
         <TextView
+            android:id="@+id/descricao_cadastro_cliente"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:text="Salão"
+            android:text="Para ter acesso a agenda dos salões cadastrados."
             android:layout_marginTop="7dp"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/btn_cadastro_salao"/>
+            android:layout_below="@+id/btn_cadastro_cliente"/>
+
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -41,23 +56,38 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <ImageButton
-            android:id="@+id/btn_cadastro_cliente"
+        <TextView
+            android:id="@+id/label_cadastro_salao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher"
-            android:contentDescription="btnChamarCadastroCliente"
-            android:onClick="iniciarFragCadastro"
-            android:layout_centerInParent="true"/>
+            android:textSize="16sp"
+            android:text="Salão"
+            android:layout_marginTop="7dp"
+            android:layout_centerHorizontal="true" />
+
+        <ImageButton
+            android:id="@+id/btn_cadastro_salao"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/ic_user_salao"
+            android:background="#00000000"
+            android:contentDescription="btnChamarCadastroSalao"
+            android:onClick="confirmarTipoCadastro"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/label_cadastro_salao"/>
 
         <TextView
+            android:id="@+id/descricao_cadastro_salao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:text="Cliente"
+            android:text="Para abrir um salão online."
             android:layout_marginTop="7dp"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/btn_cadastro_cliente"/>
+            android:layout_below="@+id/btn_cadastro_salao"/>
+
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -65,20 +95,33 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <ImageButton
-            android:id="@+id/btn_cadastro_cabeleireiro"
+        <TextView
+            android:id="@+id/label_cadastro_cabeleireiro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher"
+            android:textSize="16sp"
+            android:text="Cabeleireiro"
+            android:layout_marginTop="7dp"
+            android:layout_centerHorizontal="true" />
+
+        <ImageButton
+            android:id="@+id/btn_cadastro_cabeleireiro"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/ic_user_cabeleireiro"
+            android:background="#00000000"
             android:contentDescription="btnChamarCadastroCabeleireiro"
-            android:onClick="iniciarFragCadastro"
-            android:layout_centerInParent="true"/>
+            android:onClick="confirmarTipoCadastro"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/label_cadastro_cabeleireiro"/>
 
         <TextView
+            android:id="@+id/descricao_cadastro_cabeleireiro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:text="Cabeleireiro"
+            android:text="Para profissionais que ocuparam uma vaga em um salão online."
             android:layout_marginTop="7dp"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/btn_cadastro_cabeleireiro"/>

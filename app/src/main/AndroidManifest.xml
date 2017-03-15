@@ -14,40 +14,38 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyTheme">
-        <activity
-            android:name=".TabsActivity"
-            android:configChanges="orientation|screenSize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".SplashScreenActivity"
-            android:configChanges="orientation|screenSize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".SplashScreen2Activity"
-            android:configChanges="orientation|screenSize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
+        <!-- ACTIVITYS -->
+        <activity
+            android:name=".activitys.SplashScreenActivity"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleInstance">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".activitys.LoginActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name=".HomeActivity" />
+        <activity android:name=".activitys.HomeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
         <activity
-            android:name=".SignUpActivity"
+            android:name=".activitys.SignUpActivity"
             android:configChanges="orientation|screenSize" />
+        <activity android:name=".activitys.ErroBuscarOnlineActivity" />
         <activity
-            android:name=".SignUp2Activity"
-            android:configChanges="orientation|screenSize" />
-        <activity android:name=".ErroBuscarOnlineActivity"></activity>
+            android:name=".activitys.ConfiguracaoInicialActivity"
+            android:configChanges="orientation|screenSize"/>
+
+        <!-- SERVICES -->
+        <service
+            android:name=".services.SincronizarBancosIntentService"
+            android:enabled="true" >
+        </service>
     </application>
 
 </manifest>

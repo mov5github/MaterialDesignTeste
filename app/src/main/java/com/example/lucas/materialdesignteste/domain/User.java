@@ -1,12 +1,12 @@
 package com.example.lucas.materialdesignteste.domain;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.example.lucas.materialdesignteste.activitys.SignUpActivity;
 import com.example.lucas.materialdesignteste.domain.util.LibraryClass;
 import com.google.firebase.database.DatabaseReference;
-
-import java.util.ArrayList;
 
 /**
  * Created by Lucas on 03/01/2017.
@@ -46,16 +46,30 @@ public class User {
     public User(){}
 
 
-    public void saveDB( DatabaseReference.CompletionListener... completionListener ){
-        DatabaseReference firebase = LibraryClass.getFirebase().child("users").child( getId() );
+    public void saveDB(Activity activity, DatabaseReference.CompletionListener... completionListener){
+        if (activity instanceof SignUpActivity){
+            DatabaseReference firebase = null;
+            if( completionListener.length == 0 ){
+                firebase = LibraryClass.getFirebase().child("users").child( getId() ).child("email");
+                firebase.setValue(this.email);
+                firebase = LibraryClass.getFirebase().child("users").child( getId() ).child("password");
+                firebase.setValue(this.password);
+                firebase = LibraryClass.getFirebase().child("users").child( getId() ).child("nivelUsuario");
+                firebase.setValue(this.nivelUsuario);
+            }
+            else{
+                firebase = LibraryClass.getFirebase().child("users").child( getId() ).child("email");
+                firebase.setValue(this.email, completionListener[0]);
+                firebase = LibraryClass.getFirebase().child("users").child( getId() ).child("password");
+                firebase.setValue(this.password, completionListener[0]);
+                firebase = LibraryClass.getFirebase().child("users").child( getId() ).child("nivelUsuario");
+                firebase.setValue(this.nivelUsuario, completionListener[0]);
+            }
+        }
 
-        if( completionListener.length == 0 ){
-            firebase.setValue(this);
-        }
-        else{
-            firebase.setValue(this, completionListener[0]);
-        }
     }
+
+
 
 
 
@@ -89,7 +103,7 @@ public class User {
         if (id != null && !id.isEmpty()){
             bundle.putString("id",id);
         }
-        if (tipoUsuario!= null && !tipoUsuario.isEmpty()){
+        if (tipoUsuario != null && !tipoUsuario.isEmpty()){
             bundle.putString("tipoUsuario",tipoUsuario);
         }
         if (nivelUsuario!= null && !nivelUsuario.isEmpty()){
@@ -97,6 +111,15 @@ public class User {
         }
         if (codUnico!= null && !codUnico.isEmpty()){
             bundle.putString("codUnico",codUnico);
+        }
+        if (etapaFuncionamentoOK != null){
+            bundle.putBoolean("etapaFuncionamentoOK",etapaFuncionamentoOK);
+        }
+        if (etapaServicosOK != null){
+            bundle.putBoolean("etapaServicosOK",etapaServicosOK);
+        }
+        if (etapaCabeleireirosOK != null){
+            bundle.putBoolean("etapaCabeleireirosOK",etapaCabeleireirosOK);
         }
         return bundle;
     }

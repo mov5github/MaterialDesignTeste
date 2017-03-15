@@ -1,11 +1,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".TabsActivity">
+    tools:context=".activitys.ConfiguracaoInicialActivity">
     <item
-        android:id="@+id/action_item1"
+        android:id="@+id/action_logout"
         android:orderInCategory="100"
-        android:title="ITEM1"
+        android:title="@string/logout"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_ajuda"
+        android:orderInCategory="100"
+        android:title="@string/ajuda"
         app:showAsAction="never" />
 
 </menu>
